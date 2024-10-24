@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenWeather</title>
+    <style>
+      body.light-theme{
+        background-color: aqua;
+        color: var(--text-light);
+        
+      }
+
+      body.dark-theme{
+        background-color: blanchedalmond;
+      }
+    </style>
+  </head>
+  <body id="dark-theme" class="light-theme">
+    <div class="weather-container">
+      <h1>Weather</h1>
+      <input type="text" id="city" placeholder="Enter city name" />
+      <button onclick="getWeather()">Get Weather</button>
+      <button onclick="toggleTheme()">Toggle Theme</button>
+      <div id="current-weather" class="weather-section">
+        <h2>Current Weather</h2>
+        <div id="weather-icon"></div>
+        <p>temp</p>
+        <p>humidity</p>
+        <p>wind</p>
+      </div>
+      <div>
+        <h2>5-Day Forecast</h2>
+        <div id="forecast-cards"></div>
+      </div>
+    </div>
+
+    <script>
+      const apikey= 'https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}';
+
+      function getWeather(){
+        const city = document.getElementById('city').value;
+
+        fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid=${apikey}`)
+        .then(response => response.json())
+        .then(data => displayCurrentWeather(data));
+
+        fetch(`https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&past_days=10&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m`)
+        .then(respone => respone.json())
+        .then(data => displayForecast(data));
+      }
+
+      function displayCurrentWeather(data){
+        document.getElementById('temp').innerText = Temperature: ${data.main.temp};
+        document.getElementById('humidity').innerText = Humidity: ${data.main.humidity};
+        document.getElementById('wind').innerText = Wind Speed: ${data.main.wind.speed};
+
+        // const icon= data.weather[0].icon;
+        // document.getElementById('weather-icon').innerHTML = <img src="https://open-meteo.com/images/convective_clouds.webp" alt="weatherIcon">;
+
+        // function displayForecast(data) {
+        //   const forecastContainer = document.getElementById('forecast-cards');
+        //   forecastContainer.innerHTML='';
+
+        //   data.list.forEach((forecast,index) => {
+        //     if(index % 8 === 0) 
+        //     const card = document.createElement('div');
+        //   card
+        //   })
+        // }
+        
+        function toggleTheme(){
+          document.body.classList.toggle('dark-theme');
+          document.body.classList.toggle('light-theme');
+        }
+      }
+    </script>
+  </body>
+</html>
